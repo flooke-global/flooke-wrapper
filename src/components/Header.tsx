@@ -67,7 +67,7 @@ const GoBack = ({ setRoute }: GoBackProps) => (
         // if(e.preventPropagation)
         //   e.preventPropagation();
       }
-      // setRoute(null)
+      setRoute(null)
     }}>
     <ChevronLeftOutlinedIcon htmlColor="var(--white-X00)"/>
   </Box>

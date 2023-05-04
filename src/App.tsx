@@ -47,7 +47,7 @@ function App() {
           <DialogContentText
             id="alert-dialog-description"
             fontFamily="DM Sans">
-            Make the most of this, you need to use it in full screen view.
+            To make the most of this, you need to use it in full screen view.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
