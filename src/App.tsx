@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText,  } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from '@mui/material';
 import { BASE_URL } from './utils/constantUtils.ts';
 import Header from './components/Header.tsx';
 import Footer from './components/Footer.tsx';
@@ -7,9 +14,18 @@ import './App.css';
 import './styles/font-faces.css';
 import './styles/globals.css';
 import { PATH_DEFAULT } from './utils/constantUtils';
+import { openFullscreen, closeFullscreen } from './utils/helperUtils.ts';
 
 function App() {
   const [route, setRoute] = useState(PATH_DEFAULT);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  useEffect(() => {
+    function onFullscreenChange() {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    }   
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+  }, []);
   const burger = () => console.log('burger called');
   const goto = (path: string) => {
     setRoute(path);
@@ -18,19 +34,31 @@ function App() {
     <div
       className="App">
       <Dialog
-        open
+        open={!isFullscreen}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+        <DialogTitle
+          id="alert-dialog-title"
+          fontFamily="DM Sans">
+          {"Don't be a tool!"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
+          <DialogContentText
+            id="alert-dialog-description"
+            fontFamily="DM Sans">
+            Make the most of this, you need to use it in full screen view.
           </DialogContentText>
         </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{
+              fontFamily: "DM Sans"
+            }}
+            onClick={() => openFullscreen()}>
+            Full View
+          </Button>
+        </DialogActions>
       </Dialog>
       <Header
         label="Orders"
