@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "bulky pixels";
+  src: local("bulky-pixels.regular"),
+    url("../assets/bulky-pixels.regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "alpha beta";
+  src: local("alphbeta"),
+    url("../assets/alphbeta.ttf") format("truetype");
+}
