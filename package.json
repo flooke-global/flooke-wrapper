@@ -2,7 +2,7 @@
   "name": "flooke-wrapper",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://heres-sav.github.io/flooke-wrapper/",
+  "homepage": "https://heres-sav.github.io",
   "dependencies": {
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
