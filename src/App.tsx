@@ -14,7 +14,8 @@ import './App.css';
 import './styles/font-faces.css';
 import './styles/globals.css';
 import { PATH_DEFAULT } from './utils/constantUtils';
-import { openFullscreen, closeFullscreen } from './utils/helperUtils.ts';
+import { openFullscreen } from './utils/helperUtils.ts';
+import searchAndConnectBt from './utils/printUtils/searchAndConnectBt';
 
 function App() {
   const [route, setRoute] = useState(PATH_DEFAULT);
@@ -26,6 +27,19 @@ function App() {
     document.addEventListener('fullscreenchange', onFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
   }, []);
+  useEffect(() => {
+    window.addEventListener('message', event => {
+      console.log(event);
+      // IMPORTANT: checking the origin of the data!
+      if (event.origin === BASE_URL) {
+        // The data was sent from flooke orders, reads the first data
+        if("print" === event.data?.method) {
+          searchAndConnectBt(event.data?.content)
+        }
+      }
+    });
+    return window.removeEventListener('message', event => {});
+  })
   const burger = () => console.log('burger called');
   const goto = (path: string) => {
     setRoute(path);

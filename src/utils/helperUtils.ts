@@ -1,3 +1,8 @@
+export const getTodayFormatted = () => {
+  const today = new Date();
+  return `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`
+}
+
 export function openFullscreen() {
   const elem = document.documentElement;
   if (elem.requestFullscreen) {
