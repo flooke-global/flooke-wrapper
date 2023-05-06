@@ -24,10 +24,10 @@ const Burger = ({ burger }: BurgerProps) => (
 )
 
 interface GoBackProps {
-  setRoute: (v: any) => void
+  goback: () => void
 }
 
-const GoBack = ({ setRoute }: GoBackProps) => (
+const GoBack = ({ goback }: GoBackProps) => (
   <Box
     sx={{
       cursor: "pointer",
@@ -38,37 +38,7 @@ const GoBack = ({ setRoute }: GoBackProps) => (
       lineHeight: 0,
       backgroundColor: "var(--gray-hard-500)"
     }}
-    onClick={e => {
-      var defaultLocation = PATH_DEFAULT;
-      var oldHash = window.location.hash;
-  
-      // eslint-disable-next-line no-restricted-globals
-      history.back();
-  
-      var newHash = window.location.hash;
-  
-      /* If the previous page hasn't been loaded in a given time (in this case
-      * 1000ms) the user is redirected to the default location given above.
-      * This enables you to redirect the user to another page.
-      */
-  
-      if(
-        newHash === oldHash &&
-        (typeof(document.referrer) !== "string" || document.referrer  === "")
-      ){
-        window.setTimeout(function(){
-          // redirect to default location
-          window.location.href = defaultLocation;
-        }, 1000); // set timeout in ms
-      }
-      if(e){
-        if(e.preventDefault)
-          e.preventDefault();
-        // if(e.preventPropagation)
-        //   e.preventPropagation();
-      }
-      setRoute(null)
-    }}>
+    onClick={goback}>
     <ChevronLeftOutlinedIcon htmlColor="var(--white-X00)"/>
   </Box>
 )
@@ -76,10 +46,10 @@ const GoBack = ({ setRoute }: GoBackProps) => (
 interface HeaderProps {
   label: string
   burger: () => void
-  setRoute: (v: any) => void
+  goback: () => void
 }
 
-export default function Header({ label, burger, setRoute }: HeaderProps) : JSX.Element {
+export default function Header({ label, burger, goback }: HeaderProps) : JSX.Element {
   return (
     <Box
       display="flex"
@@ -102,7 +72,7 @@ export default function Header({ label, burger, setRoute }: HeaderProps) : JSX.E
           fontFamily="DM Sans"
         >{label}</Typography>
       </Box>
-      <GoBack setRoute={setRoute} />
+      <GoBack goback={goback} />
     </Box>
   );
 }
