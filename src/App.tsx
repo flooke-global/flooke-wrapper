@@ -24,7 +24,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [route, setRoute] = useState(PATH_DEFAULT);
   const [routeHistory, setRouteHistory] = useState([]);
-  const [isFullscreen, setIsFullscreen] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const goback = () => {
     const _routeHistory = [...routeHistory];
     setLoading(true);
