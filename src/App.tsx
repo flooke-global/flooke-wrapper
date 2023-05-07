@@ -24,7 +24,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [route, setRoute] = useState(PATH_DEFAULT);
   const [routeHistory, setRouteHistory] = useState([]);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(true);
   const goback = () => {
     const _routeHistory = [...routeHistory];
     setLoading(true);
@@ -131,6 +131,11 @@ function App() {
         src={BASE_URL+route}
         title="flooke"
         style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
           display: "block",
           width: "100vw",
           height: `${window.innerHeight
