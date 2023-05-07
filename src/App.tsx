@@ -113,9 +113,9 @@ function App() {
         <Box
           sx={{
             position: "absolute",
-            top: "0px",
+            top: "41px",
             right: "0px",
-            bottom: "0px",
+            bottom: "80px",
             left: "0px",
             display: "flex",
             alignItems: "center",
