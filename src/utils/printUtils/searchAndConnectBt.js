@@ -6,7 +6,6 @@ const PRINT_SERVICE_UUID = '000018f0-0000-1000-8000-00805f9b34fb';
 const PRINT_CHARACTERISTIC_UUID = '00002af1-0000-1000-8000-00805f9b34fb';
 
 const searchAndConnectBt = (details) => {
-  console.log(details);
   // const state = store.getState();
   // if (state.session.printCharacteristic == null) {
     navigator.bluetooth.requestDevice({

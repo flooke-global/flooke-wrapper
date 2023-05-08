@@ -38,42 +38,32 @@ let context = canvas.getContext("2d");
 const updateBill = (data) => {
   let printStream = '';
   let totalAmount = 0;
-  Object.keys(data).map(cat => {
-    if(!data[cat]) {
-      alert("There's a problem in order structure");
+  data["order-details"].forEach(item => {
+    if(!item["item-name"]
+      || !item["item-count"]
+      || !item.price
+    ) {
       return;
     }
-    Object.keys(data[cat]).map(item => {
-      if(!data[cat][item]
-        || !data[cat][item].count
-        || !data[cat][item].unit
-        || !data[cat][item].price
-      ) {
-        return;
-      }
-      totalAmount += Number(data[cat][item].price)
-      let count = String(data[cat][item].count)
-      let unit = String(data[cat][item].unit)
-      let price = String(data[cat][item].price)
-      console.log(count);
-      console.log(unit);
-      console.log(price);
-      if(item.length > ITEM_DESC_SPACE) {
-        printStream += item.substring(0, ITEM_DESC_SPACE) +
-          BLANK_FILL.repeat(COUNT_SPACE + UNIT_SPACE + PRICE_SPACE)
-        const nextLine = item.substring(ITEM_DESC_SPACE, 2*ITEM_DESC_SPACE)
-        printStream += nextLine + BLANK_FILL.repeat(ITEM_DESC_SPACE - nextLine.length)
-        printStream += count + BLANK_FILL.repeat(COUNT_SPACE - count.length)
-        printStream += unit + BLANK_FILL.repeat(UNIT_SPACE - unit.length)
-        printStream += price + BLANK_FILL.repeat(PRICE_SPACE - price.length)
-      }
-      else {
-        printStream += item + BLANK_FILL.repeat(ITEM_DESC_SPACE - item.length)
-        printStream += count + BLANK_FILL.repeat(COUNT_SPACE - count.length)
-        printStream += unit + BLANK_FILL.repeat(UNIT_SPACE - unit.length)
-        printStream += price + BLANK_FILL.repeat(PRICE_SPACE - price.length)
-      }
-    })
+    totalAmount += Number(item["item-count"]) * Number(item.price)
+    let count = String(item["item-count"])
+    let unit = String(item.price)
+    let price = String(Number(item["item-count"]) * Number(item.price))
+    if(item["item-name"].length > ITEM_DESC_SPACE) {
+      printStream += item["item-name"].substring(0, ITEM_DESC_SPACE) +
+        BLANK_FILL.repeat(COUNT_SPACE + UNIT_SPACE + PRICE_SPACE)
+      const nextLine = item["item-name"].substring(ITEM_DESC_SPACE, 2*ITEM_DESC_SPACE)
+      printStream += nextLine + BLANK_FILL.repeat(ITEM_DESC_SPACE - nextLine.length)
+      printStream += count + BLANK_FILL.repeat(COUNT_SPACE - count.length)
+      printStream += unit + BLANK_FILL.repeat(UNIT_SPACE - unit.length)
+      printStream += price + BLANK_FILL.repeat(PRICE_SPACE - price.length)
+    }
+    else {
+      printStream += item["item-name"] + BLANK_FILL.repeat(ITEM_DESC_SPACE - item["item-name"].length)
+      printStream += count + BLANK_FILL.repeat(COUNT_SPACE - count.length)
+      printStream += unit + BLANK_FILL.repeat(UNIT_SPACE - unit.length)
+      printStream += price + BLANK_FILL.repeat(PRICE_SPACE - price.length)
+    }
   })
   printStream += DIVIDER;
   printStream += FOOTER + String(totalAmount) +
@@ -95,10 +85,8 @@ const getImagePrintData = () => {
   canvas.height = 150;
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
   let imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
-  console.log(imageData);
 
   if (imageData == null) {
-    console.log('No image to print!');
     return new Uint8Array([]);
   }
   // Each 8 pixels in a row is represented by a byte
@@ -165,39 +153,16 @@ const sendImageData = async (printCharacteristic) => {
 
 async function sendTextData(data, printCharacteristic) {
   const printStream = updateBill(data);
-  console.log(printStream);
   // Get the bytes for the text
   let encoder = new TextEncoder("utf-8");
   // Add line feed + carriage return chars to text
   let text = encoder.encode(printStream + '\u000A\u000D');
   for(let i = 0; i < text.length; i += PRINT_WRITE_VALUE_LIMIT) {
-    console.log(text.slice(i, i+PRINT_WRITE_VALUE_LIMIT));
     await printCharacteristic.writeValueWithoutResponse(text.slice(i, i+PRINT_WRITE_VALUE_LIMIT))
   }
 }
 
 const sendPrinterData = (data, printCharacteristic) => {
-  // const somedata = {
-  //   Appetizers: {
-  //     "BBQ Lollipop": {
-  //       count: 3,
-  //       unit: 200,
-  //       price: 600
-  //     },
-  //     "Honey Mustard Sandwich": {
-  //       count: 1,
-  //       unit: 180,
-  //       price: 180
-  //     }
-  //   },
-  //   "Caffine": {
-  //     "Normal Coffee": {
-  //       count: 4,
-  //       unit: 50,
-  //       price: 200
-  //     }
-  //   }
-  // }
   sendTextData(data, printCharacteristic);
   // Print an image followed by the text
   // sendImageData(printCharacteristic)

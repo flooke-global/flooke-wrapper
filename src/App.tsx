@@ -131,11 +131,6 @@ function App() {
         src={BASE_URL+route}
         title="flooke"
         style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          right: 0,
-          bottom: 0,
           display: "block",
           width: "100vw",
           height: `${window.innerHeight
