@@ -38,26 +38,37 @@ export const goback = (e: Event, setRoute: (v: object) => void) => {
 }
 
 export function openFullscreen() {
-  const elem = document.documentElement;
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
+  // Trigger fullscreen
+  const docElmWithBrowsersFullScreenFunctions = document.documentElement as HTMLElement & {
+    mozRequestFullScreen(): Promise<void>;
+    webkitRequestFullscreen(): Promise<void>;
+    msRequestFullscreen(): Promise<void>;
+  };
+
+  if (docElmWithBrowsersFullScreenFunctions.requestFullscreen) {
+    docElmWithBrowsersFullScreenFunctions.requestFullscreen();
+  } else if (docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen) { /* Firefox */
+    docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen();
+  } else if (docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen();
+  } else if (docElmWithBrowsersFullScreenFunctions.msRequestFullscreen) { /* IE/Edge */
+    docElmWithBrowsersFullScreenFunctions.msRequestFullscreen();
   }
-  // else if (elem.webkitRequestFullscreen) { /* Safari */
-  //   elem.webkitRequestFullscreen();
-  // }
-  // else if (elem.msRequestFullscreen) { /* IE11 */
-  //   elem.msRequestFullscreen();
-  // }
 }
 
 export function closeFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
+  const docWithBrowsersExitFunctions = document as Document & {
+    mozCancelFullScreen(): Promise<void>;
+    webkitExitFullscreen(): Promise<void>;
+    msExitFullscreen(): Promise<void>;
+  };
+  if (docWithBrowsersExitFunctions.exitFullscreen) {
+    docWithBrowsersExitFunctions.exitFullscreen();
+  } else if (docWithBrowsersExitFunctions.mozCancelFullScreen) { /* Firefox */
+    docWithBrowsersExitFunctions.mozCancelFullScreen();
+  } else if (docWithBrowsersExitFunctions.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+    docWithBrowsersExitFunctions.webkitExitFullscreen();
+  } else if (docWithBrowsersExitFunctions.msExitFullscreen) { /* IE/Edge */
+    docWithBrowsersExitFunctions.msExitFullscreen();
   }
-  // else if (document.webkitExitFullscreen) { /* Safari */
-  //   document.webkitExitFullscreen();
-  // }
-  // else if (document.msExitFullscreen) { /* IE11 */
-  //   document.msExitFullscreen();
-  // }
 }
