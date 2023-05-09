@@ -18,6 +18,7 @@ import './styles/globals.css';
 import { PATH_DEFAULT } from './utils/constantUtils';
 import { openFullscreen } from './utils/helperUtils.ts';
 import searchAndConnectBt from './utils/printUtils/searchAndConnectBt';
+import { checkIfFullScreen } from './utils/helperUtils';
 
 function App() {
   const iframeRef = useRef(null);
@@ -47,7 +48,7 @@ function App() {
   useEffect(() => {
     function onFullscreenChange() {
       setIsFullscreen(Boolean(document.fullscreenElement));
-    }   
+    }
     document.addEventListener('fullscreenchange', onFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
   }, []);
@@ -73,6 +74,15 @@ function App() {
     });
     return window.removeEventListener('message', event => {});
   });
+  /** Safari Desktop 5.1+, Safari Mobile 9.0+ */
+  useEffect(() => {
+    const docWithBrowsersFullScreenChange = document as Document & {
+      onwebkitfullscreenchange: () => void;
+    };
+    docWithBrowsersFullScreenChange.onwebkitfullscreenchange = () => {
+      setIsFullscreen(checkIfFullScreen());
+    }
+  })
   return (
     <div
       className="App">

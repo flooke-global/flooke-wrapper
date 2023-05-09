@@ -72,3 +72,11 @@ export function closeFullscreen() {
     docWithBrowsersExitFunctions.msExitFullscreen();
   }
 }
+
+/** Safari Desktop 5.1+, Safari Mobile 9.0+ */
+export function checkIfFullScreen() {
+  const docWithBrowsersIsFullScreenCheck = document as Document & {
+    webkitIsFullScreen: boolean;
+  };
+  return docWithBrowsersIsFullScreenCheck.webkitIsFullScreen;
+}
