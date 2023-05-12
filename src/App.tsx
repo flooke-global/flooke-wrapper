@@ -23,6 +23,7 @@ import { checkIfFullScreen } from './utils/helperUtils';
 function App() {
   const iframeRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [iframeHeight, setIframeHeight] = useState(window.innerHeight);
   const [route, setRoute] = useState(PATH_DEFAULT);
   const [routeHistory, setRouteHistory] = useState([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -60,7 +61,6 @@ function App() {
   }, []);
   useEffect(() => {
     window.addEventListener('message', event => {
-      console.log(event);
       // IMPORTANT: checking the origin of the data!
       if (event.origin === BASE_URL) {
         // The data was sent from flooke orders, reads the first data
@@ -82,6 +82,10 @@ function App() {
     docWithBrowsersFullScreenChange.onwebkitfullscreenchange = () => {
       setIsFullscreen(checkIfFullScreen());
     }
+  })
+  useEffect(() => {
+    window.addEventListener("resize", () => setIframeHeight(window.innerHeight));
+    return window.removeEventListener('resize', () => {});
   })
   return (
     <div
@@ -143,7 +147,7 @@ function App() {
         style={{
           display: "block",
           width: "100vw",
-          height: `${window.innerHeight
+          height: `${iframeHeight
             - 41 //Header height
             - 80 //Footer height
             - 10 //Footer bottom margin
