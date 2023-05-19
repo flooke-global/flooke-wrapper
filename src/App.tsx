@@ -1,12 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
   Box,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   CircularProgress
 } from '@mui/material';
 import { BASE_URL } from './utils/constantUtils.ts';
@@ -16,7 +10,6 @@ import './App.css';
 import './styles/font-faces.css';
 import './styles/globals.css';
 import { PATH_DEFAULT } from './utils/constantUtils';
-import { openFullscreen } from './utils/helperUtils.ts';
 import searchAndConnectBt from './utils/printUtils/searchAndConnectBt';
 import { checkIfFullScreen } from './utils/helperUtils';
 
@@ -73,7 +66,7 @@ function App() {
       }
     });
     return window.removeEventListener('message', event => {});
-  });
+  }, []);
   /** Safari Desktop 5.1+, Safari Mobile 9.0+ */
   useEffect(() => {
     const docWithBrowsersFullScreenChange = document as Document & {
@@ -84,42 +77,19 @@ function App() {
     }
   })
   useEffect(() => {
-    window.addEventListener("resize", () => setIframeHeight(window.innerHeight));
+    window.addEventListener("resize", () => {
+      // disable fullscreen check for screen resolution bigger than mobile resolution
+      setIframeHeight(window.innerHeight)
+    });
     return window.removeEventListener('resize', () => {});
-  })
+  }, [])
   return (
     <div
       className="App">
-      <Dialog
-        open={!isFullscreen}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle
-          id="alert-dialog-title"
-          fontFamily="DM Sans">
-          {"Don't be a tool!"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            id="alert-dialog-description"
-            fontFamily="DM Sans">
-            To make the most of this, you need to use it in full screen view.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            sx={{
-              fontFamily: "DM Sans"
-            }}
-            onClick={() => openFullscreen()}>
-            Full View
-          </Button>
-        </DialogActions>
-      </Dialog>
       <Header
         label="Orders"
         burger={burger}
+        isFullscreen={isFullscreen}
         goback={goback}
       />
       {

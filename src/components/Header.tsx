@@ -1,8 +1,10 @@
 import React from 'react';
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import { PATH_DEFAULT } from '../utils/constantUtils';
+import { openFullscreen, closeFullscreen } from '../utils/helperUtils';
 
 interface BurgerProps {
   burger: () => void
@@ -45,11 +47,12 @@ const GoBack = ({ goback }: GoBackProps) => (
 
 interface HeaderProps {
   label: string
+  isFullscreen: boolean
   burger: () => void
   goback: () => void
 }
 
-export default function Header({ label, burger, goback }: HeaderProps) : JSX.Element {
+export default function Header({ label, isFullscreen, burger, goback }: HeaderProps) : JSX.Element {
   return (
     <Box
       display="flex"
@@ -57,7 +60,29 @@ export default function Header({ label, burger, goback }: HeaderProps) : JSX.Ele
       alignItems="center"
       padding="0px 12px"
       borderBottom="1px solid #DDD">
-      <Burger burger={burger} />
+      <Box
+        display="flex">
+        {/* <Burger burger={burger} /> */}
+        <Box
+          sx={{
+            cursor: "pointer",
+            userSelect: "none",
+            padding: "2px",
+            margin: "6px 0px",
+            borderRadius: "6px",
+            lineHeight: 0,
+            backgroundColor: "var(--gray-hard-500)"
+          }}
+          onClick={() => {
+            if(!isFullscreen) openFullscreen()
+            else closeFullscreen()
+          }}>
+          {
+            isFullscreen ? <FullscreenExitIcon htmlColor="var(--white-X00)" />
+            : <FullscreenIcon htmlColor="var(--white-X00)" />
+          }
+        </Box>
+      </Box>
       <Box>
         <Typography
           fontSize="0.8rem"
