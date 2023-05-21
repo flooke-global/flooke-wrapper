@@ -84,8 +84,7 @@ function App() {
     return window.removeEventListener('resize', () => {});
   }, [])
   return (
-    <div
-      className="App">
+    <div>
       <Header
         label="Orders"
         burger={burger}

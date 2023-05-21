@@ -89,12 +89,14 @@ export default function Header({ label, isFullscreen, burger, goback }: HeaderPr
           lineHeight="0.8rem"
           fontFamily="DM Sans"
           color="var(--black-500)"
+          textAlign="center"
         >flooke</Typography>
         <Typography
           fontSize="1.2rem"
           fontWeight="600"
           lineHeight="1rem"
           fontFamily="DM Sans"
+          textAlign="center"
         >{label}</Typography>
       </Box>
       <GoBack goback={goback} />
